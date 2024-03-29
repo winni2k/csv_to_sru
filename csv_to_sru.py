@@ -6,15 +6,16 @@ import io
 import click
 
 # Simplified SRU file template for each record
-SRU_TEMPLATE = """#BLANKETT K4-2023P4
+SRU_TEMPLATE_1 = """#BLANKETT K4-2023P4
 #IDENTITET {identity} {date} {time}
 #NAMN {name}
 #UPPGIFT 3100 {quantity}
 #UPPGIFT 3101 {designation}
 #UPPGIFT 3102 {sales_price}
 #UPPGIFT 3103 {cost}
-#UPPGIFT 3104 {profit_loss}
-#UPPGIFT 7014 {index}
+"""
+
+SRU_TEMPLATE_2 = """#UPPGIFT 7014 {index}
 #BLANKETTSLUT
 """
 
@@ -43,10 +44,15 @@ def convert_csv_to_sru(input_file, output_file, identity_number, name,
     sru_records = []
     
     for index, row in enumerate(csv_reader, start=1):
-        sru_record = SRU_TEMPLATE.format(identity=identity_number, date=date, time=time,
+        sru_record = SRU_TEMPLATE_1.format(identity=identity_number, date=date, time=time,
                                             name=name, quantity=row['Antal'], designation=row['Beteckning'],
-                                            sales_price=row['Försjälningspris'], cost=row['Omkostnadsbelopp'],
-                                            profit_loss=row['Vinst/Förlust'], index=index)
+                                            sales_price=row['Försjälningspris'], cost=row['Omkostnadsbelopp'])
+        profit_loss = int(row['Vinst/Förlust'])
+        if profit_loss >= 0:
+            sru_record += f'#UPPGIFT 3104 {profit_loss}\n'
+        else:
+            sru_record += f'#UPPGIFT 3105 {abs(profit_loss)}\n'
+        sru_record += SRU_TEMPLATE_2.format(index=index)
         sru_records.append(sru_record)
     
     final_output = ''.join(sru_records) + '#FIL_SLUT'

@@ -60,3 +60,24 @@ def test_output_file_creation():
     assert '#IDENTITET 000000000000 20200101 010101' in content
     assert '#NAMN Test Name' in content
 
+def test_loss():
+    """Test if the output is created successfully with dummy data."""
+    # Dummy input data
+    input_data = 'Beteckning,Antal,Försjälningspris,Omkostnadsbelopp,Vinst/Förlust\nTEST,1,100,120,-20\n'
+    identity_number = '000000000000'
+    name = 'Test Name'
+
+    # Use StringIO for input and output to simulate file reading/writing
+    input_file = io.StringIO(input_data)
+    output_file = io.StringIO()
+
+    # Run the conversion with fixed date and time for consistency in tests
+    convert_csv_to_sru(input_file, output_file, identity_number, name)
+
+    # Retrieve the output content
+    content = output_file.getvalue()
+
+    # Assert that the expected strings are in the content
+    assert '#UPPGIFT 3104' not in content
+    assert '#UPPGIFT 3105 20' in content
+
