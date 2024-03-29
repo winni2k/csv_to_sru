@@ -72,7 +72,7 @@ def test_output_file_creation():
 
 
 def test_loss():
-    """Test if the output is created successfully with dummy data."""
+    """Test if the converter properly handles losses."""
     # Dummy input data
     input_data = "Beteckning,Antal,Försjälningspris,Omkostnadsbelopp,Vinst/Förlust\nTEST,1,100,120,-20\n"
     identity_number = "000000000000"
