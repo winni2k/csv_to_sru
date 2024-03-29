@@ -26,7 +26,7 @@ poetry install
 To convert a CSV file into an SRU file suitable for K4 form submissions, use the following CLI command:
 
 ```bash
-poetry run python csv_to_sru_converter.py INPUT_FILE_PATH OUTPUT_FILE_PATH --identity "IDENTITY_NUMBER" --name "NAME"
+poetry run python csv_to_sru.py INPUT_FILE_PATH OUTPUT_FILE_PATH --identity "IDENTITY_NUMBER" --name "NAME"
 ```
 
 In this command, replace INPUT_FILE_PATH and OUTPUT_FILE_PATH with the paths to your input and output files, respectively. Also, replace IDENTITY_NUMBER with your Swedish social security number, and NAME with your name as it should appear in the generated SRU file.
